@@ -1,2 +1,3 @@
 # terraform-aws
-Terraform scripts to create infrastructure on AWS
+
+Terraform scripts to automated deployment of infrastrcture on AWS
