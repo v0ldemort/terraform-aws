@@ -47,6 +47,6 @@ Following are the terraform command which are required to validate and deploy th
     - terraform init (this command will download the terraform plugins)
     - terraform validate (this command will validate whether your script is configured perfectly or not)
     - terraform apply (this command will deploy all the resources on AWS)
-      Once the apply command got completed, you will get the LoadBalancers hostname which you will need to access the URL
+      Once the apply command got completed, you will get the LoadBalancer's hostname which you will need to access the URL
     - terraform destroy (this command will remove all the resource which was deployed by terraform apply command)
     
