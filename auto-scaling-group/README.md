@@ -5,25 +5,25 @@ Here we have created terraform scripts to spawn resources on AWS as per the requ
 By using this script you can create following resources on AWS
     
     - AWS Launch Configuration
-        * We used latest Amazon Linux 2 AMI
-        * All the configuration which required to install and make a webserver accessible is mentioned in userdata.sh file
-        * Instance type would be t2.micro
-        * root volume will be of 8Gib
-        * Secondary volume will be also of 8Gib and mounted on /var/log/nginx
-        * Here we are deleting both the volumes on ec2 deletion.
-        * As per requirement we are encrypting both the volumes root and sendoary to keep data encrypted at rest.
-        * A security group which only expose the port 80 to access the webserver and port 22 to connect the ec2 machine over ssh.
+        * Latest Amazon Linux 2 AMI is used
+        * All the configuration which are required to install and make a webserver accessible, is mentioned in userdata.sh file
+        * Instance type is t2.micro
+        * The size of root volume is 8GB
+        * Secondary volume is also of 8Gib and mounted on /var/log/nginx
+        * Both the volumes will be deleted once the ec2 instance is deleted.
+        * As per requirement both root and sendoary volumes are encripted to keep the data safe.
+        * A security group will be established to expose the port 80 to access webserver and port 22 to connect the ec2 instance over ssh.
         * Key name is mastercard, so you have to create a key pair with name mastercard before execution of this terraform script.
         * Here we used nginx webserver installation steps in userdata.sh file to configure nginx webserver on http port 80 
     
     - AWS Auto Scaling Group
-        * Here we are using the launch configuration created by this script itself
+        * Here we are using the launch configuration created by this script.
         * All the configuration which required to install and make a webserver accessible is mentioned in userdata.sh file
-        * Defined maximum, minimum and desired capacity of VMs
+        * Defined maximum, minimum and desired capacity of VMs.
         * Make sure you change the list of availability zones that is applicable to your account and region.
  
     - AWS Auto Scaling Policy
-        * In auto scaling policy you can define in which criteria you want to scale up or down the VMs
+        * In auto scaling policy you can define which criteria you want for scaling up or scaling down the VMs.
         * Here we defined the policy to increase the VMs if CPU utilisation will increase beyond 80% and decrease the number of VMs once utilisation will decrease by 80%
           
     - AWS Elastic Load Balancer
@@ -49,4 +49,3 @@ Following are the terraform command which are required to validate and deploy th
     - terraform apply (this command will deploy all the resources on AWS)
       Once the apply command got completed, you will get the LoadBalancers hostname which you will need to access the URL
     - terraform destroy (this command will remove all the resource which was deployed by terraform apply command)
-    
