@@ -12,9 +12,10 @@ locals {
 
 resource "aws_elb" "mastercard-elb" {
   name = "mastercard-webserver-elb"
+  security_groups = [aws_security_group.default.id]
 
   # The same availability zone as our instances
-  availability_zones = local.availability_zones
+  subnets = aws_subnet.mastercard.*.id
   listener {
     instance_port     = 80
     instance_protocol = "http"
@@ -46,7 +47,6 @@ resource "aws_autoscaling_policy" "mastercard_scaling_policy" {
 }
 
 resource "aws_autoscaling_group" "mastercard-asg" {
-  availability_zones   = local.availability_zones
   name                 = "mastercard-webserver-asg"
   max_size             = var.asg_max
   min_size             = var.asg_min
@@ -55,7 +55,7 @@ resource "aws_autoscaling_group" "mastercard-asg" {
   launch_configuration = aws_launch_configuration.mastercard-lc.name
   load_balancers       = [aws_elb.mastercard-elb.name]
 
-  #vpc_zone_identifier = ["${split(",", var.availability_zones)}"]
+  vpc_zone_identifier = aws_subnet.mastercard.*.id
   tag {
     key = "Name"
     value = "mastercard-webserver-asg"
@@ -93,7 +93,7 @@ resource "aws_launch_configuration" "mastercard-lc" {
 resource "aws_security_group" "default" {
   name        = "mastercard-webserver-sg"
   description = "Used in the terraform"
-
+  vpc_id      = aws_vpc.mastercard.id
   # SSH access from anywhere
   ingress {
     from_port   = 22
@@ -117,4 +117,9 @@ resource "aws_security_group" "default" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "aws_key_pair" "mastercard" {
+  key_name   = "mastercard"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA487/Z+49bcT+7wnpqjvYMVOYvtUMBiu7bZa92dJJYyE+//8M31jCsrnabcnPvo4ytWzHWeUrzWMR3DiHZcyyAa3QtgS5XEgY9VsF/2jthVHSPVOfASRL145x9rMPKSQCI2zd+P2WAhFV+yuyhcpIQz822544fo1sgeDFbrNONePUm2ai9WaHm9nbWZs9MVmILpwH3z6gibe6R9QIRCXuIDVf2IYHg6FJYU83EtNSx5HJyZXwGXxc0zmaf5GxcfGhXmaXi5hmcvCrQcNkCrscNOcBRg6xD/Lz8adm1GO8nGjaTUQlu7/FHT9lXAvdJDuaM/75A7SEHW+NSTcC26Tg7Q== mastercard"
 }

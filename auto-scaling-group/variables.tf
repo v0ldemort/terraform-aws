@@ -1,18 +1,20 @@
 variable "aws_region" {
   description = "The AWS region to create things in."
-  default     = "us-east-1"
+  default     = "us-west-2"
 }
 
-# ubuntu-trusty-14.04 (x64)
+# Amazon Linux 2 AMI
 variable "aws_amis" {
   default = {
     "us-east-1" = "ami-0be2609ba883822ec"
     "us-east-2" = "ami-0a0ad6b70e61be944"
+    "us-west-1" = "ami-005c06c6de69aee84"
+    "us-west-2" = "ami-0e999cbd62129e3b1"
   }
 }
 
 variable "availability_zones" {
-  default     = "us-east-1c"
+  default     = "us-west-2c"
   description = "List of availability zones, use AWS CLI to find your "
 }
 
