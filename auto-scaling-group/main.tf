@@ -13,8 +13,6 @@ locals {
 resource "aws_elb" "mastercard-elb" {
   name = "mastercard-webserver-elb"
   security_groups = [aws_security_group.default.id]
-
-  # The same availability zone as our instances
   subnets = aws_subnet.mastercard.*.id
   listener {
     instance_port     = 80
